@@ -8,7 +8,7 @@ import (
 // TestNew
 func TestNew(t *testing.T) {
 	c := New("asdf1234", nil)
-	if reflect.TypeOf(c).String() != "*goroamclient.Client" {
+	if reflect.TypeOf(c).String() != "*roam.Client" {
 		t.Error("incorrect data type returned")
 	}
 }
