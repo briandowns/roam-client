@@ -8,6 +8,7 @@ import (
 )
 
 const roamURL = "https://api.tile38.com"
+const ua = "roam-client"
 
 // Point
 type Point struct {
@@ -40,13 +41,15 @@ type Hook struct {
 
 // ClientOpts
 type ClientOpts struct {
-	Timeout time.Duration
-	call    caller
+	Timeout   time.Duration
+	UserAgent string
+	call      caller
 }
 
 // Client
 type Client struct {
 	token string
+	ua    string
 	hc    *http.Client
 }
 
@@ -56,8 +59,16 @@ func New(token string, co *ClientOpts) *Client {
 		token: token,
 		hc:    &http.Client{},
 	}
-	if co != nil && co.Timeout > 0 {
-		c.hc.Timeout = co.Timeout
+	if co != nil {
+		if co.Timeout > 0 {
+			c.hc.Timeout = co.Timeout
+		}
+		switch {
+		case co.UserAgent != "":
+			c.ua = co.UserAgent
+		default:
+			c.ua = ua
+		}
 	}
 	return &c
 }
@@ -148,6 +159,7 @@ func (c *Client) call(m, url string, result interface{}) error {
 		return err
 	}
 	req.Header.Set("Authorization", "token "+c.token)
+	req.Header.Set("User-Agent", c.ua)
 	res, err := c.hc.Do(req)
 	if err != nil {
 		return err
