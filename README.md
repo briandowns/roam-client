@@ -2,6 +2,8 @@
 
 Go package for developing applications using [Roam](https://roam.sh/).
 
+<a href="https://travis-ci.org/tidwall/tile38"><img src="https://travis-ci.org/tidwall/tile38.svg?branch=master" alt="Build Status"></a>
+
 ## Setup
 
 * Go to the [account page](https://roam.sh/account), sign-in, and get an auth token.  
